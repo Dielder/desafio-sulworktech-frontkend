@@ -5,54 +5,36 @@ function listarColaboradores() {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+
             const tableBody = document.querySelector("#colaboradoresTable tbody");
-            tableBody.innerHTML = '';
+            tableBody.innerHTML = ''; // Limpar a tabela antes de adicionar novas linhas
 
-            const dataCafe = new Date(colaborador.dataCafe);
-            const dataFormatada = `${String(dataCafe.getDate()).padStart(2, '0')}/${String(dataCafe.getMonth() + 1).padStart(2, '0')}/${dataCafe.getFullYear()}`;
+            data.forEach(colaborador => {
+                const dataCafe = new Date(colaborador.dataCafe);
+                const dataFormatada = `${String(dataCafe.getDate()).padStart(2, '0')}/${String(dataCafe.getMonth() + 1).padStart(2, '0')}/${dataCafe.getFullYear()}`;
 
-            const trouxeStatus = dataCafe < hoje ? true : colaborador.trouxeOpcao;
+                const trouxeStatus = dataCafe < new Date() ? true : colaborador.trouxeOpcao;
 
-            // Criando a linha da tabela com as informações
-            const row = document.createElement('tr');
-            row.innerHTML = `
-        <td>${colaborador.nome}</td>
-        <td>${colaborador.cpf}</td>
-        <td>${dataFormatada}</td>
-        <td>${colaborador.opcoesCafe.join(", ")}</td>
-        <td>
-            <button onclick="atualizarColaborador(${colaborador.id})">Atualizar</button>
-            <button onclick="excluirColaborador(${colaborador.id})">Excluir</button>
-        </td>
-    `;
-            tableBody.appendChild(row);
+                // Criando a linha da tabela com as informações
+                const row = document.createElement('tr');
+                row.innerHTML = `
+    <td>${colaborador.nome}</td>
+    <td>${colaborador.cpf}</td>
+    <td>${dataFormatada}</td>
+    <td>${colaborador.opcoesCafe.join(", ")}</td>
+    <td>
+        <button onclick="window.location.href='atualizar.html?id=${colaborador.id}'" style="background-color: yellow; color: black; border: none; padding: 8px 16px; cursor: pointer; font-size: 14px; border-radius: 5px;">Atualizar</button>
+        <button onclick="excluirColaborador('${colaborador.id}')" style="background-color: red; color: white; border: none; padding: 8px 16px; cursor: pointer; font-size: 14px; border-radius: 5px;">Excluir</button>
+    </td>
+`;
+                tableBody.appendChild(row);
+
+            });
         })
         .catch(error => console.error('Erro ao listar colaboradores:', error));
 }
 
-// Função para atualizar o status de trouxeOpcao do colaborador
-function atualizarStatus(id, trouxeOpcao) {
-    fetch(`http://localhost:8080/api/CafeDaManha/trouxeOpcao/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ trouxeOpcao: trouxeOpcao }), // Enviar o objeto com o campo correto
-    })
-        .then(response => {
-            if (response.ok) {
-                alert('Status de trouxeOpcao atualizado com sucesso!');
-                listarColaboradores(); // Recarregar a lista de colaboradores após a atualização
-            } else {
-                response.text().then(text => alert('Erro: ' + text));
-            }
-        })
-        .catch(error => {
-            alert('Erro ao atualizar o status: ' + error);
-        });
-}
-
-// Função para cadastrar um novo colaborador - usaremos apenas em cadastro.html
+// Função para cadastrar um novo colaborador
 function cadastrarColaborador(event) {
     event.preventDefault(); // Evitar o comportamento padrão do formulário
 
@@ -92,6 +74,8 @@ function cadastrarColaborador(event) {
 
 // Função para excluir um colaborador
 function excluirColaborador(id) {
+    console.log("Função excluirColaborador chamada. ID:", id); // Verifique se chega aqui
+
     if (confirm("Tem certeza de que deseja excluir este colaborador?")) {
         fetch(`${apiUrl}/${id}`, {
             method: 'DELETE'
@@ -108,63 +92,6 @@ function excluirColaborador(id) {
     }
 }
 
-// Função para abrir o formulário de atualização de colaborador
-function atualizarColaborador(id) {
-    fetch(`${apiUrl}/${id}`)
-        .then(response => response.json())
-        .then(colaborador => {
-            // Preencher o formulário com os dados do colaborador
-            document.getElementById('nome').value = colaborador.nome;
-            document.getElementById('cpf').value = colaborador.cpf;
-            document.getElementById('dataCafe').value = colaborador.dataCafe;
-            document.getElementById('opcoesCafe').value = colaborador.opcoesCafe.join(", ");
-
-            // Armazenar o ID do colaborador para o salvamento
-            document.getElementById('colaboradorId').value = id;
-        })
-        .catch(error => console.error("Erro ao buscar dados do colaborador:", error));
-}
-
-// Função para salvar as alterações
-function salvarAlteracoes(event) {
-    event.preventDefault();
-    const id = document.getElementById('colaboradorId').value;
-
-    const colaboradorAtualizado = {
-        nome: document.getElementById('nome').value,
-        cpf: document.getElementById('cpf').value,
-        dataCafe: document.getElementById('dataCafe').value,
-        opcoesCafe: document.getElementById('opcoesCafe').value.split(",").map(item => item.trim())
-    };
-
-    fetch(`${apiUrl}/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(colaboradorAtualizado)
-    })
-        .then(response => {
-            if (response.ok) {
-                alert("Colaborador atualizado com sucesso!");
-                listarColaboradores(); // Atualizar a lista após a atualização
-            } else {
-                response.text().then(text => alert("Erro: " + text));
-            }
-        })
-        .catch(error => console.error("Erro ao atualizar colaborador:", error));
-}
-
-function atualizarColaborador(id) {
-    // Lógica para preencher e exibir o formulário de edição
-    document.getElementById('editForm').style.display = 'block';
-}
-
-function cancelarEdicao() {
-    document.getElementById('editForm').style.display = 'none';
-}
-
-
 
 // Verificar qual página está carregada para executar o código correto
 document.addEventListener('DOMContentLoaded', () => {
@@ -177,3 +104,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function atualizarColaborador(event) {
+    event.preventDefault(); // Evita o recarregamento da página
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const colaboradorId = urlParams.get('id');
+
+    // Verificação de depuração
+    console.log("Colaborador ID:", colaboradorId);  // Exibe o ID no console para checar
+
+    if (!colaboradorId) {
+        alert('Erro: ID do colaborador não encontrado.');
+        return;
+    }
+
+    // Restante do código para capturar dados e enviar a requisição PUT
+    const nome = document.getElementById('nome').value;
+    const cpf = document.getElementById('cpf').value;
+    const dataCafe = document.getElementById('dataCafe').value;
+    const opcoesCafe = document.getElementById('opcoesCafe').value.split(",").map(item => item.trim());
+
+    const colaboradorAtualizado = {
+        nome: nome,
+        cpf: cpf,
+        dataCafe: dataCafe,
+        opcoesCafe: opcoesCafe
+    };
+
+    // Enviar a requisição PUT para atualizar o colaborador no backend
+    fetch(`${apiUrl}/${colaboradorId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(colaboradorAtualizado)
+    })
+        .then(response => {
+            if (response.ok) {
+                alert('Colaborador atualizado com sucesso!');
+                window.location.href = 'lista.html'; // Redireciona para a página de listagem após a atualização
+            } else {
+                response.text().then(text => alert('Erro ao atualizar colaborador: ' + text));
+            }
+        })
+        .catch(error => {
+            alert('Erro ao atualizar colaborador: ' + error);
+            console.error('Erro ao atualizar colaborador:', error);
+        });
+}
+
+
+// Associa a função ao evento de envio do formulário na página de atualização
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('formAtualizarColaborador').addEventListener('submit', atualizarColaborador);
+});

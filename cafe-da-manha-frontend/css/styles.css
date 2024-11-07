@@ -2,22 +2,27 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #0072ff, #00c6ff);
-    color: #333;
+    background: #121212;
+    /* Fundo escuro */
+    color: #e0e0e0;
+    /* Texto claro para contraste */
 }
 
 .container {
     width: 80%;
     margin: 40px auto;
-    background-color: #ffffffcc;
+    background-color: #1e1e1e;
+    /* Fundo um pouco mais claro que o fundo da página */
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    /* Sombra escura */
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #f5f5f5;
+    /* Título claro */
     font-size: 2em;
     margin-bottom: 20px;
 }
@@ -33,26 +38,28 @@ h1 {
 .header-links a {
     display: inline-block;
     padding: 12px 20px;
-    background: #0072ff;
-    color: #fff;
+    background: #333333;
+    /* Fundo escuro para botões */
+    color: #e0e0e0;
     font-size: 1em;
     font-weight: bold;
     border-radius: 8px;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
 }
 
 .header-links a:hover {
-    background-color: #d20000;
+    background-color: #555555;
+    /* Botões um pouco mais claros ao passar o mouse */
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
 }
 
 .header-links a:active {
-    background-color: #0040a8;
+    background-color: #444444;
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 form {
@@ -64,16 +71,18 @@ form label {
     margin-top: 10px;
     font-size: 1em;
     font-weight: bold;
-    color: #333;
+    color: #cccccc;
 }
 
 form input {
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 6px;
     font-size: 1em;
+    background-color: #333;
+    color: #e0e0e0;
 }
 
 form button {
@@ -96,17 +105,82 @@ form button:hover {
     border-collapse: collapse;
     margin-top: 20px;
     font-size: 1em;
-    background-color: #ffffffdd;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
 }
 
-#colaboradoresTable th, #colaboradoresTable td {
+#colaboradoresTable th,
+#colaboradoresTable td {
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     text-align: center;
 }
 
 #colaboradoresTable th {
-    background-color: #f8f9fa;
+    background-color: #333333;
+    /* Fundo mais escuro para o cabeçalho */
     font-weight: bold;
-    color: #333;
+    color: #f5f5f5;
+}
+
+/* Botão de "Cadastrar novo colaborador" */
+a.cadastrar-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #007bff;
+    /* Azul escuro para contraste */
+    color: #ffffff;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Sombra suave */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+a.cadastrar-btn:hover {
+    background-color: #0056b3;
+    /* Azul mais escuro ao passar o mouse */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+a.cadastrar-btn:active {
+    background-color: #003f7f;
+    /* Azul ainda mais escuro ao clicar */
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão de "Ver lista de colaboradores" */
+a.lista-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #17a2b8;
+    /* Tom de azul claro */
+    color: #ffffff;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Sombra suave */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+a.lista-btn:hover {
+    background-color: #138496;
+    /* Azul mais escuro ao passar o mouse */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+a.lista-btn:active {
+    background-color: #0d5c72;
+    /* Azul ainda mais escuro ao clicar */
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

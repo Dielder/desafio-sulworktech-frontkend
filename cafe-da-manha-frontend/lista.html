@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Café da Manhã - Lista de Colaboradores</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Café da Manhã - Lista de Colaboradores</h1>
@@ -20,19 +22,21 @@
                         <th>CPF</th>
                         <th>Data do Café</th>
                         <th>Opções</th>
-                        <th>Ações</th> <!-- Nova coluna para ações -->
+                        <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Os colaboradores serão listados aqui -->
+                <tbody id="colaboradoresBody">
+                    <!-- Os colaboradores serão listados aqui dinamicamente -->
                 </tbody>
+
             </table>
             <br>
-            <a href="index.html">Cadastrar novo colaborador</a>
+            <a href="index.html" class="cadastrar-btn">Cadastrar novo colaborador</a>
         </div>
     </div>
-    
+
 
     <script src="js/script.js"></script>
 </body>
+
 </html>
