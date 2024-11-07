@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:8080/api/CafeDaManha';
+const apiUrl = 'https://desafio-sulworktech-production.up.railway.app/api/cafe-da-manha';
 
 // Função para listar colaboradores
 function listarColaboradores() {
