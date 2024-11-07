@@ -8,24 +8,24 @@ function listarColaboradores() {
             const tableBody = document.querySelector("#colaboradoresTable tbody");
             tableBody.innerHTML = '';
 
-            const hoje = new Date();
-            data.forEach(colaborador => {
-                const dataCafe = new Date(colaborador.dataCafe);
-                const dataFormatada = `${String(dataCafe.getDate()).padStart(2, '0')}/${String(dataCafe.getMonth() + 1).padStart(2, '0')}/${dataCafe.getFullYear()}`;
+            const dataCafe = new Date(colaborador.dataCafe);
+            const dataFormatada = `${String(dataCafe.getDate()).padStart(2, '0')}/${String(dataCafe.getMonth() + 1).padStart(2, '0')}/${dataCafe.getFullYear()}`;
 
-                // Se a data do café já passou, marcar automaticamente "não trouxe"
-                const trouxeStatus = dataCafe < hoje ? true : colaborador.trouxeOpcao;
+            const trouxeStatus = dataCafe < hoje ? true : colaborador.trouxeOpcao;
 
-                // Criando a linha da tabela com as informações
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${colaborador.nome}</td>
-                    <td>${colaborador.cpf}</td>
-                    <td>${dataFormatada}</td>
-                    <td>${colaborador.opcoesCafe.join(", ")}</td>
-                `;
-                tableBody.appendChild(row);
-            });
+            // Criando a linha da tabela com as informações
+            const row = document.createElement('tr');
+            row.innerHTML = `
+        <td>${colaborador.nome}</td>
+        <td>${colaborador.cpf}</td>
+        <td>${dataFormatada}</td>
+        <td>${colaborador.opcoesCafe.join(", ")}</td>
+        <td>
+            <button onclick="atualizarColaborador(${colaborador.id})">Atualizar</button>
+            <button onclick="excluirColaborador(${colaborador.id})">Excluir</button>
+        </td>
+    `;
+            tableBody.appendChild(row);
         })
         .catch(error => console.error('Erro ao listar colaboradores:', error));
 }
@@ -89,6 +89,82 @@ function cadastrarColaborador(event) {
             console.error('Erro ao cadastrar colaborador:', error);
         });
 }
+
+// Função para excluir um colaborador
+function excluirColaborador(id) {
+    if (confirm("Tem certeza de que deseja excluir este colaborador?")) {
+        fetch(`${apiUrl}/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Colaborador excluído com sucesso!");
+                    listarColaboradores(); // Atualizar a lista de colaboradores após a exclusão
+                } else {
+                    response.text().then(text => alert("Erro: " + text));
+                }
+            })
+            .catch(error => console.error("Erro ao excluir colaborador:", error));
+    }
+}
+
+// Função para abrir o formulário de atualização de colaborador
+function atualizarColaborador(id) {
+    fetch(`${apiUrl}/${id}`)
+        .then(response => response.json())
+        .then(colaborador => {
+            // Preencher o formulário com os dados do colaborador
+            document.getElementById('nome').value = colaborador.nome;
+            document.getElementById('cpf').value = colaborador.cpf;
+            document.getElementById('dataCafe').value = colaborador.dataCafe;
+            document.getElementById('opcoesCafe').value = colaborador.opcoesCafe.join(", ");
+
+            // Armazenar o ID do colaborador para o salvamento
+            document.getElementById('colaboradorId').value = id;
+        })
+        .catch(error => console.error("Erro ao buscar dados do colaborador:", error));
+}
+
+// Função para salvar as alterações
+function salvarAlteracoes(event) {
+    event.preventDefault();
+    const id = document.getElementById('colaboradorId').value;
+
+    const colaboradorAtualizado = {
+        nome: document.getElementById('nome').value,
+        cpf: document.getElementById('cpf').value,
+        dataCafe: document.getElementById('dataCafe').value,
+        opcoesCafe: document.getElementById('opcoesCafe').value.split(",").map(item => item.trim())
+    };
+
+    fetch(`${apiUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(colaboradorAtualizado)
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Colaborador atualizado com sucesso!");
+                listarColaboradores(); // Atualizar a lista após a atualização
+            } else {
+                response.text().then(text => alert("Erro: " + text));
+            }
+        })
+        .catch(error => console.error("Erro ao atualizar colaborador:", error));
+}
+
+function atualizarColaborador(id) {
+    // Lógica para preencher e exibir o formulário de edição
+    document.getElementById('editForm').style.display = 'block';
+}
+
+function cancelarEdicao() {
+    document.getElementById('editForm').style.display = 'none';
+}
+
+
 
 // Verificar qual página está carregada para executar o código correto
 document.addEventListener('DOMContentLoaded', () => {
