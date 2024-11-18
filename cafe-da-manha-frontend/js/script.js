@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Função para atualizar colaborador
 function atualizarColaborador(event) {
     event.preventDefault(); // Evita o recarregamento da página
 
