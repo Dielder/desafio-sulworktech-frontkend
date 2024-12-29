@@ -24,7 +24,7 @@ Este projeto é uma aplicação web para organizar os participantes dos cafés d
 - A lista de participantes é atualizada em tempo real conforme as informações são inseridas.
 - O código valida se os CPFs são duplicados ou se a data do evento é válida.
 
-# Link para a aplicação:
+# Link para a aplicação: (Está fora do ar, a plataforma dá 5 dólares grátis para cada usuário, os meus acabaram e não consegui deixar a aplicação rodando!)
 https://desafio-sulworktech-production-app.up.railway.app/index.html
 
 ![Tela de Cadastro](imagens/FazerCadastro.png)
